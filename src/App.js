@@ -1,25 +1,45 @@
-import logo from './logo.svg';
+import { useState } from 'react'
+import Accordian from './components/accordian'
+
 import './App.css';
+import RandomHex from './components/random_hex/randomHex';
+import StarRating from './components/StarRating/starRating';
+import ImageSlider from './components/ImageSlider/imageSlider';
+import ResumeBuilder from './components/resume';
 
 function App() {
+  const [count, setCount] = useState(0);
+  const [skills] = useState(['Angular', 'React', 'Vue']);
+  const [education] = useState([{
+    school: 'school1',
+    year: 2009,
+    address: 'IND'
+  }]);
+  const [experience] = useState([{
+    year: 2022,
+    company: 'Dummy1',
+    role: 'Software eng'
+  },
+  {
+    year: 2021,
+    company: 'Dummy2',
+    role: 'Software eng'
+  },
+  {
+    year: 2020,
+    company: 'Dummy3',
+    role: 'Software eng'
+  }
+  ]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {/* <Accordian></Accordian> */}
+      {/* <RandomHex></RandomHex> */}
+      {/* <StarRating noOfStars={10}></StarRating>) */}
+      {/* <ImageSlider url='https://picsum.photos/v2/list' limit='10' page='1'></ImageSlider> */}
+      <ResumeBuilder skills={skills} education={education} experience={experience}></ResumeBuilder>
     </div>
-  );
+  )
 }
 
 export default App;
