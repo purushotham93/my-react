@@ -11,7 +11,7 @@ export default function PlayButton({message, children, onPlay, onPause}) {
     }
   return (
     <div className="playButton">
-      <button onClick={()=> handleClick(e)}>{children}</button>
+      <button onClick={(e)=> handleClick(e)}>{children}</button>
     </div>
   );
 }
