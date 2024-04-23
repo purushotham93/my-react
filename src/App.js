@@ -6,6 +6,7 @@ import RandomHex from './components/random_hex/randomHex';
 import StarRating from './components/StarRating/starRating';
 import ImageSlider from './components/ImageSlider/imageSlider';
 import ResumeBuilder from './components/resume';
+import PlayButton from './components/PlayButton/PlayButton';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -37,7 +38,8 @@ function App() {
       {/* <RandomHex></RandomHex> */}
       {/* <StarRating noOfStars={10}></StarRating>) */}
       {/* <ImageSlider url='https://picsum.photos/v2/list' limit='10' page='1'></ImageSlider> */}
-      <ResumeBuilder skills={skills} education={education} experience={experience}></ResumeBuilder>
+      {/* <ResumeBuilder skills={skills} education={education} experience={experience}></ResumeBuilder> */}
+      <PlayButton onPlay={() => {console.log('Play')}} onPause={() => {console.log('Pause')}}>Play</PlayButton>
     </div>
   )
 }
