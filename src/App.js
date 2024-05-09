@@ -8,7 +8,7 @@ import ImageSlider from './components/ImageSlider/imageSlider';
 import ResumeBuilder from './components/resume';
 import PlayButton from './components/PlayButton/PlayButton';
 import { Counter } from './components/counter';
-import {videoDB} from './data';
+import { videoDB } from './data';
 import VideoList from './components/VideoList/VideoList';
 import { AddVideo } from './components/AddVideo/AddVideo';
 
@@ -37,11 +37,27 @@ function App() {
     role: 'Software eng'
   }
   ]);
-    const [videos,setVideos] = useState(videoDB);
+  const [videos, setVideos] = useState(videoDB);
+  const [editableVideo, setEditableVideo] = useState(null);
 
-    function addVideo(video) {
-      setVideos([...videos, {id: videos.length + 1, ...video}])
-    }
+  function addVideo(video) {
+    setVideos([...videos, { id: videos.length + 1, ...video }])
+  }
+  function deleteVideo(id) {
+    setVideos(videos.filter((video) => video.id !== id))
+  }
+  function editVideo(id) {
+    setEditableVideo(videos.find((video) => video.id === id))
+
+  }
+
+  function updateVideo(vid) {
+    const index = videos.findIndex((video) => video.id === vid.id);
+    const newVideos = [...videos]
+    newVideos.splice(index, 1, vid)
+    setVideos(newVideos);
+    setEditableVideo(null)
+  }
   return (
     <div className='App'>
       {/* <Accordian></Accordian> */}
@@ -49,9 +65,9 @@ function App() {
       {/* <StarRating noOfStars={10}></StarRating>) */}
       {/* <ImageSlider url='https://picsum.photos/v2/list' limit='10' page='1'></ImageSlider> */}
       {/* <ResumeBuilder skills={skills} education={education} experience={experience}></ResumeBuilder> */}
-      <AddVideo addVideo={addVideo}></AddVideo>
-      <VideoList videos={videos}></VideoList>
-      <PlayButton onPlay={() => {console.log('Play')}} onPause={() => {console.log('Pause')}}>Play</PlayButton>
+      <AddVideo addVideo={addVideo} editableVideo={editableVideo} updateVideo={updateVideo}></AddVideo>
+      <VideoList videos={videos} deleteVideo={deleteVideo} editVideo={editVideo}></VideoList>
+      <PlayButton onPlay={() => { console.log('Play') }} onPause={() => { console.log('Pause') }}>Play</PlayButton>
       <Counter></Counter>
     </div>
   )
