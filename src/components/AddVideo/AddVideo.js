@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import './AddVideo.css'
 
@@ -6,21 +6,25 @@ const initialState = {
     time: '1 month ago',
     channel: 'Purushotham react',
     verified: true,
-    title:'',
+    title: '',
     views: '',
 }
 
-export function AddVideo ({addVideo}) {
-   
+export function AddVideo({ addVideo, updateVideo, editableVideo }) {
+
     const [video, setVideo] = useState(initialState)
-    function handleSubmit (e) {
+    function handleSubmit(e) {
         console.log(e)
         e.preventDefault();
         e.stopPropagation();
-        addVideo(video)
+        if (!editableVideo) {
+            addVideo(video)
+        } else {
+            updateVideo(video);
+        }
     }
 
-    function handleChange (e) {
+    function handleChange(e) {
         console.log(e.target.value);
         setVideo({
             ...video,
@@ -29,12 +33,20 @@ export function AddVideo ({addVideo}) {
         console.log(video)
     }
 
+    useEffect(() => {
+        if (editableVideo) {
+            setVideo(editableVideo)
+        } else {
+            setVideo(initialState)
+        }
+    }, [editableVideo])
+
     return <>
-    <form>
-        <input type='text' name='title' placeholder="video title" onChange={handleChange} value={video.title} ></input>
-        <input type='text' name='views' placeholder="views" onChange={handleChange} value={video.views}></input>
-        
-        <button onClick={handleSubmit}>Add Video</button>
-    </form>
+        <form>
+            <input type='text' name='title' placeholder="video title" onChange={handleChange} value={video.title} ></input>
+            <input type='text' name='views' placeholder="views" onChange={handleChange} value={video.views}></input>
+
+            <button onClick={handleSubmit}>{editableVideo ? 'Edit' : 'Add'} Video</button>
+        </form>
     </>
 }
