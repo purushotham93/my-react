@@ -7,8 +7,13 @@ import StarRating from './components/StarRating/starRating';
 import ImageSlider from './components/ImageSlider/imageSlider';
 import ResumeBuilder from './components/resume';
 import PlayButton from './components/PlayButton/PlayButton';
+import { Counter } from './components/counter';
+import {videoDB} from './data';
+import VideoList from './components/VideoList/VideoList';
+import { AddVideo } from './components/AddVideo/AddVideo';
 
 function App() {
+  console.log('renderApp')
   const [count, setCount] = useState(0);
   const [skills] = useState(['Angular', 'React', 'Vue']);
   const [education] = useState([{
@@ -32,14 +37,22 @@ function App() {
     role: 'Software eng'
   }
   ]);
+    const [videos,setVideos] = useState(videoDB);
+
+    function addVideo(video) {
+      setVideos([...videos, {id: videos.length + 1, ...video}])
+    }
   return (
-    <div>
+    <div className='App'>
       {/* <Accordian></Accordian> */}
       {/* <RandomHex></RandomHex> */}
       {/* <StarRating noOfStars={10}></StarRating>) */}
       {/* <ImageSlider url='https://picsum.photos/v2/list' limit='10' page='1'></ImageSlider> */}
       {/* <ResumeBuilder skills={skills} education={education} experience={experience}></ResumeBuilder> */}
+      <AddVideo addVideo={addVideo}></AddVideo>
+      <VideoList videos={videos}></VideoList>
       <PlayButton onPlay={() => {console.log('Play')}} onPause={() => {console.log('Pause')}}>Play</PlayButton>
+      <Counter></Counter>
     </div>
   )
 }
