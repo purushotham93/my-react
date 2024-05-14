@@ -10,7 +10,7 @@ const initialState = {
     views: '',
 }
 
-export function AddVideo({ addVideo, updateVideo, editableVideo }) {
+export function AddVideo({ editableVideo, dispatch }) {
 
     const [video, setVideo] = useState(initialState)
     function handleSubmit(e) {
@@ -18,9 +18,9 @@ export function AddVideo({ addVideo, updateVideo, editableVideo }) {
         e.preventDefault();
         e.stopPropagation();
         if (!editableVideo) {
-            addVideo(video)
+            dispatch({ type: 'ADD', payload: { video } })
         } else {
-            updateVideo(video);
+            dispatch({ type: 'UPDATE', payload: { vid: video } });
         }
     }
 
