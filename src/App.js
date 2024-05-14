@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 import Accordian from './components/accordian'
 
 import './App.css';
@@ -37,14 +37,35 @@ function App() {
     role: 'Software eng'
   }
   ]);
-  const [videos, setVideos] = useState(videoDB);
   const [editableVideo, setEditableVideo] = useState(null);
+  const [videos, dispatch] = useReducer(videoReducer, videoDB);
+
+
+  function videoReducer(videos, action) {
+
+    switch (action.type) {
+      case 'ADD':
+        return [...videos, { ...action.payload, id: videos.length + 1 }];
+      case 'DELETE':
+        return videos.filter((video) => video.id !== action.payload.id);
+      case 'UPDATE':
+        const index = videos.findIndex((video) => video.id === action.payload.vid.id);
+        const newVideos = [...videos]
+        newVideos.splice(index, 1, action.payload.vid)
+        console.log('sdds', action.payload);
+        setEditableVideo(null);
+        return newVideos;
+      default:
+        return videos;
+    }
+  }
 
   function addVideo(video) {
-    setVideos([...videos, { id: videos.length + 1, ...video }])
+    dispatch({ type: 'ADD', payload: { video } })
   }
   function deleteVideo(id) {
-    setVideos(videos.filter((video) => video.id !== id))
+    console.log(id)
+
   }
   function editVideo(id) {
     setEditableVideo(videos.find((video) => video.id === id))
@@ -52,11 +73,7 @@ function App() {
   }
 
   function updateVideo(vid) {
-    const index = videos.findIndex((video) => video.id === vid.id);
-    const newVideos = [...videos]
-    newVideos.splice(index, 1, vid)
-    setVideos(newVideos);
-    setEditableVideo(null)
+    dispatch({ type: 'UPDATE', payload: { vid } })
   }
   return (
     <div className='App'>
@@ -65,8 +82,8 @@ function App() {
       {/* <StarRating noOfStars={10}></StarRating>) */}
       {/* <ImageSlider url='https://picsum.photos/v2/list' limit='10' page='1'></ImageSlider> */}
       {/* <ResumeBuilder skills={skills} education={education} experience={experience}></ResumeBuilder> */}
-      <AddVideo addVideo={addVideo} editableVideo={editableVideo} updateVideo={updateVideo}></AddVideo>
-      <VideoList videos={videos} deleteVideo={deleteVideo} editVideo={editVideo}></VideoList>
+      <AddVideo dispatch={dispatch} editableVideo={editableVideo}></AddVideo>
+      <VideoList videos={videos} dispatch={dispatch} editVideo={editVideo}></VideoList>
       <PlayButton onPlay={() => { console.log('Play') }} onPause={() => { console.log('Pause') }}>Play</PlayButton>
       <Counter></Counter>
     </div>
